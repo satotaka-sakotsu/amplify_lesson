@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import Board from './components/Board';
+import Information from './components/Information';
+import { squaresType, historiesType } from './types/game';
 import './App.css';
 
-type squaresType = {
-  squares: Array<string | null>
-};
-
 type stateType = {
-  history: Array<squaresType>;
+  history: historiesType;
   stepNumber: number;
   xIsNext: boolean;
 };
@@ -26,17 +24,6 @@ const Container = () => {
   const history = state.history;
   const current = history[state.stepNumber];
   const winner = calculateWinner(current.squares);
-
-  const moves = history.map((step, move) => {
-    const desc = move ?
-      'Go to move #' + move :
-      'Go to game start';
-    return (
-      <li key={move}>
-        <button onClick={() => jumpTo(move)}>{desc}</button>
-      </li>
-    );
-  });
 
   let status;
   if (winner) {
@@ -81,14 +68,17 @@ const Container = () => {
         />
       </div>
       <div className="game-info">
-        <div>{status}</div>
-        <ol>{moves}</ol>
+        <Information
+          history={history}
+          status={status}
+          onClick={step => jumpTo(step)}
+        />
       </div>
     </div>
   );
 };
 
-function calculateWinner(squares: squaresType['squares']) {
+function calculateWinner(squares: squaresType) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],

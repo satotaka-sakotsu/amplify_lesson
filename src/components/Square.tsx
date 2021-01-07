@@ -1,6 +1,6 @@
 import React from "react";
 
-type propsType = {
+export type propsType = {
   onClick: () => void;
   value: string | null;
 };
